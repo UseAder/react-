@@ -1,0 +1,127 @@
+React开发时间2013，vue开发时间2014年 agl开发时间1999年
+    开发商Facbook
+        1.因为数据绑定时，需要大量操作真实Dom，性能成本太高
+          (在传统数据绑定操作时，通常是通过一个数据请求将数据内容获取过来，然后将数据解析成若干变量，然后进行
+            真实Dom的渲染操作，如果请求过多，则会极大影响其性能)
+        2.网站的数据流向太混乱，不好控制
+    因为以上原因，开发React
+
+React概述
+    1.和angularJs一样，核心解决的问题是数据绑定
+    2.组件化开发(使用React开发的时候，页面的任何构建都是组件component)
+    3.Jsx语法和虚拟Dom(基于Jsx进行创建组件，React用变量的形式定义了一套Dom模型)
+    4.组件具有生命周期(开发者可以基于生命周期对组件进行管理)
+    5.单向数据流(父组件流向子组件，或者服务器端数据改变，客户数据更新的操作)
+            
+
+React优势 //MVC(Model view Controller)
+    1.React不是一个MVC框架，只是其中一个层次。相对易于学习
+    2.由于轻巧的VDOM概念，使得React速度非常快
+    3.模块化理念(模块定义、接口暴露、模块加载、模块调用)，不使用模板
+    4.单向数据绑定(单向数据操作，服务器数据一旦更新，就会直接重新渲染整个App)
+    5.能实现服务器端的渲染(Server Side Render)，便于搜索引擎优化(SEO)
+    6.与其他框架、库兼容性非常好()
+    7.用于创建可复用。可聚集的Web组件js库，Js逻辑与HTML标签紧密连接并且极易理解
+
+React劣势
+    1.它仅仅是一个V(虚拟)，处理大型项目时还需要引入FLUX和Routing(路由)等相关的内容
+     (Flux 是一种应用处理的数据的模式是一种架构思想)
+
+React渲染方式
+    1.用户输入
+    2.从Api获取数据
+    3.将数据传递给顶层组件(因为组件存在嵌套)
+    4.React将每个组件渲染出来
+
+React优势特性
+    1.一个React组件可以理解成一个独立的函数(接收的参数{props}可以接收参数传递返回内容)
+    2.虚拟DOM树（网页真实Dom更新操作慢）
+        (每一次更新时
+            1.React重建DOM树
+            2.采用Difference算法，找到与上个版本DOM的差异
+            3.计算出需要更新的DOM操作，进行批量更新
+    3.服务器与客户端共用逻辑(lsomorphic js{例：Axios(vue-axios nodejs)})
+    4.SEO友好，便于生成缓存的单页应用
+    5.直接渲染特定的页面不会用渲染整个App
+
+React中样式设置的4种方法(一般采用第二种)
+    1.传统的样式设置，但是不能使用class，需要使用className
+    2.在render的return外部设置一个js对象，需要编写成驼峰式写法，在jsx中直接调用
+    3.在外部设置公共的样式内容，可以引入并直接使用，意味着是全局样式，命名为驼峰式
+    4.采用对象原型，给react的类的对象设置样式原型，然后再react类中进行调用
+React中方法设置的4种方法(一般采用第二种)
+    1.传统的方法设置，设置一个函数，并是用onClick这样的驼峰式写法进行调用 onClick={方法名}
+    2.在render的return外部设置一个js方法，需要编写成驼峰式写法，在jsx中直接调用 onClick={this.方法名}
+    3.在外部设置公共的方法对象，可以引入并直接使用，意味着是全局样式，命名为驼峰式 onClick={对象.方法名}
+    4.采用对象原型，给react的类的对象设置对象原型，对象中写方法，然后再react类中进行调用 onClick={this.原型对象.方法名}
+1.传统样式 className 2.内置样式 3.全局方法 4.原型链的继承
+
+
+VDOW操作，用key可以在内存中进行对象的标识与记录，以便以后更多的识别操作（详见react1.js）
+
+属性的默认值设置  getDefaultProps
+    设置retrurn {xxx:''}
+    调用this.props.xxx
+默认状态设置      getInitialState 
+    设置retrurn {xxx:''}
+    调用this.state.xxx
+    修改默认状态state的方式不能使用this.state.xxx的形式
+        通过：
+            this.setState({//这个东东不能放在render函数体中使用，会形成死循环
+                xxx:'默认状态已被点击运行的stateClick方法改变'
+            })
+记录：
+    属性与状态的差异(属性操作可以传递字符串、数字、数组、方法————>expression 属性传递的方式：k-V和spread展开式)
+
+    VDOW操作，用key可以在内存中进行对象的标识与记录，以便以后更多的识别操作 
+   
+    属性的传递和获取:
+        正常方法属性的传递通过属性名={属性值}，属性接收通过this.props获取   
+        ES6方式对象...,属性接收通过this.props获取    
+        父组件———>子组件(this.props获取)
+        子组件———>父组件(callback回调获取)
+
+
+React的生命周期（详见react1.js）
+    钩子函数：指的是系统某些状态和参数发生改变的时候，系统立马去通知对应处理的函数叫做钩子函数
+    React组件经历总体阶段：
+        Mounted阶段：加载阶段或者说初始化阶段
+        Update阶段：组件运行中阶段
+        Unmount阶段：组件卸载阶段
+      
+        初始化阶段：
+            getDefaultProps：设置默认属性
+            getInitialState：设置默认状态
+            componentWillMount：组件即将加载时候运行的函数
+            render：必不可少的
+            componentDidMount：组件加载完毕时候运行的函数
+        运行中阶段：
+            componentWillReceiveProps：组件将要接收新组件 只有这个函数父组件不能调用
+            shouldComponentUpdate：组件是否更新 return  true或false 判断条件、、(存在一个参数this.props.属性==参数.属性，这个可以看react1.js 父传子)
+            componentWillUpdata：组件即将更新
+            render：必不可少的
+            componentDidUpdata：组件更新完毕时运行的函数
+        卸载中阶段：
+            componentWillUnmount：组件真正删除之前调用
+
+父组件嵌套子组件，父组件的处理函数通过属性的方式赋值给子组件；
+子组件通过触发事件，委托调用父组件的处理函数，从而实现把值传给父组件（回调函数）；
+
+构建单页面应用点击不同按钮时，如何进行页面切换和视图变化？
+    解决：当我们点击一个按钮的时候，要想切换一个新页面，可以通过卸载旧的组件，再重新载入新组建实现React路由
+    如何实现组件的卸载与再次加载
+        需要：ReactDOM.unmountComponentAtNode和ReactDOM.reader进行实现
+        注意：卸载组件时需要的前提是组件必学要被ReactDOM.reader处理过才能操作
+
+
+json-server(开启端口3000地址) 
+{
+  "posts": [
+    { "id": 1, "title": "json-server", "author": "typicode" }
+  ],
+  "comments": [
+    { "id": 1, "body": "some comment", "postId": 1 }
+  ],
+  "profile": { "name": "typicode" }
+}
+运行命令 json-server --watch db.json
