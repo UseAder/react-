@@ -1,0 +1,150 @@
+
+混合属性  mixins:[外部属性],
+子父组件都可以进行混合对象的引入 详见react3
+
+
+父孙之间的传递：详见react4
+     mixins:[React.addons.LinkedStateMixin],//连接状态的混合操作
+        例： <input type="text" valueLink={this.linkState('message')}/>
+            <input type="checkbox" checkedLink={this.linkState('isReactCool')}/>
+            <ListChild messageLink={this.linkState('message')} likeLike={this.linkState('isReactCool')}/>
+            <ListChildChild {...this.props}/> 
+            <input type="text" valueLink={this.props.messageLink}/>
+            <input type="checkbox" checkedLink={this.props.likeLike}/>
+
+表单：defaultChecked(默认单选需要加这个)  
+    input的设置value是readonly(只读)
+    如果你想表单对象的value是可更改的value==>defaultChecked
+     event.preventDefault();//阻止form提交出现的默认事件 
+     
+react-with-addons.min.js (LinkedState实现父子组件之间的数据双向交互操作)
+测试：(不好用。。。) 
+propTypes:{
+                messages:React.PropTypes.array.isRequired
+            },   
+
+ref(不好用。。。)
+
+模块化及Webpack
+    1.所有的组件写在一个js文件里，不易维护
+    2.通过Browser.js将jsx转成js，性能慢
+    解决：
+        借助前端构建工具webpack
+            1.Webpack是Facebook为React量身打造的构建工具
+            2.主要的作用是实现模块化、代码整合、代码分割的作用
+            3.不在需要browser进行jsx转成js了
+
+使用Webpack实现模块化：
+        1.模块指的是一组具有同等属性和功能的集合组合成一个模块
+        2.React模块化指的是一个js中存放一个或多而组件，这些组件通过CommonJS规范对外提供接口 (module.exports)    
+        3.在其他组件当中可以调用这些对外提供接口的组件        
+
+如何使用Webpack
+
+    1.使用cnpm安装Webpack到全局 cnpm i webpack -g
+    2.使用cnpm安装Webpack到当前目录  cnpm i webpack -S
+    3.安装Webpack支持react的核心工具jsx-loader到本地 cnpm i sx-loader -sx
+    4.编写webpack.config.js配置文本命令脚本
+    5.在DOS下执行webpack命令
+    6.需要引入cnpm i react react-dom -S
+
+
+webpack.config.js中需要下载各种加载器
+    例：cnpm i jsx-loader -S(jsx语法所需要)
+
+运行命令 webpack --watch (监听自动更新)  
+
+uninstall失败 清除缓存cnpm cache verify
+
+cnpm i babel-core babel-preset-es2015 babel-preset-react -D   Es6语法
+cnpm i babel-loader -S
+
+React-Router路由
+    cnpm i react-router@2.0.0 -S
+
+App.js 根级组件
+main.js 入口文件
+
+
+
+默认页面路由
+    App.js (onlyActiveOnIndex)
+    main.js (var IndexRoute=require('react-router').IndexRoute;//默认页面路由)
+             (<IndexRoute component={Home}/>)
+
+
+     <li><NavLink to="/" onlyActiveOnIndex>home</NavLink></li>
+     改
+
+
+1.表单的操作onSubmit、e.preventDefault()
+2.input value(readonly)+onChange通过state来进行数据的改变 或value———>defaultValue
+3.radio/checkbox————>checked(readonly———>defaultChecked)
+4.select(value-->defaultValue)
+5.textarea———>(value-defaultValue)
+6.input/select/textarea———>refs,但是radio、checkbox我们一般不指定它们的ref,
+    因为：
+        它们存在多个,对于这我们一般通过onChange事件以及state数据相结合的方式进行数据的获取
+7.可以将radio/checkbox进行组件的拆分，然后通过父组件调用子组件的方式进行操作
+
+gulp/webpack
+    gulp———>找到入口文件，设置出口文件，利用browserify等组件对js进行打包操作，shim
+            可以将react/react-dom进行拆离，以及使用gulp-webpack进行模块化打包操作。
+    webpack———>entry(入口)，output(出口)，module(模块)，loaders(加载器)
+            1. 如果说写的是jsx，react 15.3.2版本(createClass),我们直接可以安装并引入jsx-loader。
+            2.如果说写的是js，react 16.x.x(class),我们需要安装babel-core，bable-loader，
+                babel-preset-es2015，babel-preset-react，然后去设置loader的正则匹配
+            webpack可以实现文件的打包操作,(webpack --watch监听代码更改刷新页面)
+
+1.react-router@2.0.0,createClass的代码模型
+2.Router/Route/hashHistory,在入口文件进行Router的操作,静态路由表的配置
+3.可以利用Link进行url的链接
+4.嵌套与 Vue的不同，目前可以使用
+    <Route>
+        <Route>
+        </Route>  
+    </Route>   
+        的形式进行嵌套的操作,其子页面在此字节用{this.props.children}进行渲染操作(与Vue中的router-view相似)
+5.参数的操作主要有设参(静态路由表进行设置，通过：argu设置)，传参(一般在URL-->Link进行传递)
+    接参(通过this.props.props.params.xx进行参数的接收)   
+6.Link可以封装成一个自定义的组件NavLink，里面可以设置一个activeClassName进行高亮的样式设置
+7.多层嵌套和一般嵌套性质相同。
+8.构建了一个Home页面，就是在静态路由表设置IndexRoute处理我们的首页显示操作
+9.首页的activeClassName高亮的剔除操作，onlyActiveOnIndex来实现，另外一种通过IndexRoute+activeClassName来实现
+10.可以利用onSubmit事件触发来进行路由的跳转：
+                1.一种是通过context上下文的方式进行页面的跳转
+                2.直接引用hashHistory进行push操作,可以实现路由的跳转
+
+11.将createClass的编码模式改成class模式，会出现一些问题：
+                1.NavLink,在修改了NavLink，需要在html引用Navlink的地方用import模式进行引入；
+                2.Es6中事件，在调用的时候需要用this.method.bind(this)进行对象的绑定操作
+
+
+webpack - router 4.0 (react-router/react-router-dom的代码模型)
+        cnpm i react react-dom react-router react-router-dom -S
+        ERROR in Entry module not found: Error: Can't resolve 'babel-loader'
+        输入模块中的错误没有发现:错误:无法解析“bab加载器”(重新cnpm i)
+
+
+       错误： Uncaught DOMException: Failed to execute 'pushState' on 'History': A history state object with URL 'file:///D:/about' cannot be created in a document
+            解决： BrowserRouter as Router————>HashRouter  as Router  前者需要localhost地址打开  后者支持文件直接打开
+
+ 安装：
+    webpack-dev-server -D     (开启端口8080运行 )     
+    然后需要初始化 cnpm init,然后添加("start":"webpack-dev-server --inline --content-base ."),
+    运行命令变为cnpm start
+        HashRouter as Routerter————>BrowserRouter as Router
+
+NavLink (activeClassName="active" 设置重新加载bundle.js)
+
+
+
+import {Home,BasicRouting} from './modules';//./modules.index(模块配置)
+ <li><NavLink to="/BasicRouting" activeClassName="active">BasicRouting</NavLink></li>
+                 <Route exact path="/BasicRouting" component={BasicRouting}/>
+
+
+
+App.js
+    BrowserRouter 改成HashRouter(包括导入的)
+
