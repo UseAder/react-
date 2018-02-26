@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../lib/react.min.js"></script><!--react方法引入-->
+    <script src="../lib/react-dom.min.js"></script><!--DOM标签解析-->
+    <script src="../lib/browser.min.js"></script><!--Jsx语法解析-->
+</head>
+<style>
+
+</style>
+<body>
+    <div id="app"></div>
+<script type="text/babel">
+var HeaderComponent=React.createClass({   
+            shouldComponentUpdate(){//组件将要更新
+                console.log('llll');
+                return true
+            },
+            getDefaultProps:function () {//属性的默认值设置
+                return {
+                    num:999
+                }
+            } ,
+            getInitialState:function () {  //默认状态设置
+                return {
+                    result:'这是一个默认状态',
+                    type:'text',
+                    tex:'明文',
+                    changeResult:'input操作'
+                }
+            },
+            stateClick(){
+                //修改默认状态state的方式不能使用this.state.xxx的形式
+                //通过：
+                this.setState({//这个东东不能放在render函数体中使用，会形成死循环
+                    result:'默认状态已被点击运行的stateClick方法改变'
+                })
+            },
+            inputClick(){
+                if (this.state.type=='text') {
+                    this.setState({
+                        type:'password',
+                        tex:'密文'
+                    })
+                } else {
+                    this.setState({
+                        type:'text',
+                        tex:'明文'
+                    })
+                }
+            },
+            Change:function (event) {
+                // console.log(event.target);
+                
+                var _v=event.target.value;
+                this.setState({
+                    changeResult:_v
+                })
+            },
+            onChildChange:function (newstate) {
+                // console.log(newstate);
+                this.setState({
+                    changeResult:newstate
+                })
+            },
+            render:function() { 
+                // console.log(this.props);
+                // console.log(this.state)
+                          
+                var sub=[];
+                for (let i = 0; i < 5; i++) {
+
+                    sub.push(<ListComponent key={i} callbackParent={this.onChildChange} name={this.state.changeResult} />) //VDOW操作，用key可以在内存中进行对象的标识与记录，以便以后更多的识别操作                  
+                }
+                return(
+                <div>
+                   <p>{sub}</p> 
+                   {this.props.goods}
+                   <br/>
+                   {this.props.name}
+                    <br/>
+                   {this.props.num}
+                   <br/>
+                   {this.state.result}
+                   <button onClick={this.stateClick}>改变一个默认状态</button>
+                   <hr/>
+                   <input type={this.state.type}/>
+                   <button onClick={this.inputClick}>运行方法inputClick默认状态转化 明密切换</button>
+                   <br/> 
+                   <hr/>
+                   <input type='text' onChange={this.Change}/>父传子
+                   {this.state.changeResult}
+                        
+
+                   </div>
+                )
+            }
+        })
+var ListComponent=React.createClass({   
+    
+            Change:function (event) {
+                var _v=event.target.value;
+               this.props.callbackParent(_v)
+            },
+           
+            render:function() {     
+                // console.log(this.props);
+                
+                return(
+                <div>
+                   <p>{this.props.name} 5连发子组件</p>
+                   
+                   子传父：<input type='text' onChange={this.Change}/>
+                </div>
+                )
+            }
+        })
+
+    var goodsTitle="正常方法属性的传递通过属性名={属性值}，属性接收通过this.props获取"
+// ReactDOM.render(<HeaderComponent goods={goodsTitle}/>,document.getElementById('app'))
+var goodsTitle1={name:"ES6方式对象...,属性接收通过this.props获取",color:"red",num:'1000'}
+ReactDOM.render(<HeaderComponent goods={goodsTitle} {...goodsTitle1}/>,document.getElementById('app'))
+
+</script>
+</body>
+</html>

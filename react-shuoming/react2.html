@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../lib/react.min.js"></script><!--react方法引入-->
+    <script src="../lib/react-dom.min.js"></script><!--DOM标签解析-->
+    <script src="../lib/browser.min.js"></script><!--Jsx语法解析-->
+</head>
+<style>
+.dai{
+    color: aqua
+}
+</style>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">//解析 text/bable
+      
+        var Html=React.createClass({           
+            render:function() {    
+                return(
+                    <div>Html</div>
+                )
+            }
+        })
+        var User=React.createClass({           
+            render:function() {    
+                return(
+                    <div>User</div>
+                )
+            }
+        })
+        var List=React.createClass({           
+            render:function() {    
+                return(
+                    <div>List</div>
+                )
+            }
+        })
+        var Router=React.createClass({     
+            handlerClick(event){
+                var _title=event.target.getAttribute('title');
+                switch (_title) {
+                    case 'index':
+                    ReactDOM.render(<Html/>,document.getElementById('listApp'))
+                        break;
+                    case 'user':
+                    ReactDOM.render(<User/>,document.getElementById('listApp'))
+                        break;
+                    case 'list':
+                    ReactDOM.render(<List/>,document.getElementById('listApp'))
+                        break;
+                    default:
+                        break;
+                }
+            },       
+            render:function() {    
+                return(
+                    <div>
+                            <div onClick={this.handlerClick} title="index">首页</div> 
+                            <div onClick={this.handlerClick} title="user">用户页</div> 
+                            <div onClick={this.handlerClick} title="list">列表页</div> 
+                    </div>
+
+                )
+            }
+        })
+     
+        var Layout=React.createClass({           
+            render:function() {    
+                return(
+                    <div>
+                        <Html/>
+                        <div id="listApp"></div> 
+                        <Router/>
+                    </div>
+                )
+            }
+        })
+        ReactDOM.render(<Layout/>,document.getElementById('root'))
+        // ReactDOM.render(<List/>,document.getElementById('listApp'))
+        setTimeout(()=>{
+            var flag=ReactDOM.unmountComponentAtNode(document.getElementById('listApp'))
+        },5000)
+        
+    </script>
+</body>
+</html>

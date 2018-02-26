@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../lib/react.min.js"></script><!--react方法引入-->
+    <script src="../lib/react-dom.min.js"></script><!--DOM标签解析-->
+    <script src="../lib/react-with-addons.min.js"></script>
+    <script src="../lib/browser.min.js"></script><!--Jsx语法解析-->
+</head>
+<style>
+
+</style>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        var List=React.createClass({
+            mixins:[React.addons.LinkedStateMixin],//连接状态的混合操作
+            getInitialState:function () {
+                return {
+                    message:"hello REACT",
+                    isReactCool:true
+                }
+            },
+            render:function () {
+                return (
+                    <div>
+                        <h1>父组件</h1>
+                        // <input type="text" valueLink={this.linkState('message')}/>
+                        <input type="checkbox" checkedLink={this.linkState('isReactCool')}/>
+                        <ListChild messageLink={this.linkState('message')} likeLike={this.linkState('isReactCool')}/>
+                    </div>
+                )
+            }
+        })
+
+        var ListChild=React.createClass({
+            render:function() {
+                // console.log(this.props);
+                return(
+                    <div>
+                         <ListChildChild {...this.props}/> 
+                    </div>                   
+                )
+            }
+        })
+        var ListChildChild=React.createClass({
+            render:function() {
+                console.log(this.props);
+                return(
+                    <div>
+                        <h3>孙组件</h3>
+                        <input type="text" valueLink={this.props.messageLink}/>
+                        <input type="checkbox" checkedLink={this.props.likeLike}/>
+                    </div>                   
+                )
+            }
+        })
+        ReactDOM.render(<List/>,document.getElementById('root'))
+    </script>
+</body>
+</html>

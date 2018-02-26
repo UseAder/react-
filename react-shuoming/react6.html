@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../lib/react.min.js"></script><!--react方法引入-->
+    <script src="../lib/react-dom.min.js"></script><!--DOM标签解析-->
+    <script src="../lib/react-with-addons.min.js"></script>
+    <script src="../lib/browser.min.js"></script><!--Jsx语法解析-->
+</head>
+<style>
+
+</style>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        var List=React.createClass({
+            getInitialState:function () {
+                return {
+                    isVisable:true,
+                    subMessages:[
+                        '我会吃饭',
+                        '吃很多饭',
+                        '吃饭去'
+                ]
+                }
+            },
+            render:function () {
+                return (
+                    <div>
+                        <ListChild messages={this.state.subMessages}/>
+                    </div>
+                )
+            }
+        })    
+        var ListChild=React.createClass({
+            propTypes:{
+                messages:React.PropTypes.string.isRequired
+                          
+            },      
+            
+            getDefaultProps:function () {
+                return{
+                    messages:['dea']
+                }
+            },
+            render:function () {
+                // console.log(this.propTypes);
+                console.log(this.props);
+                var msgs=[];
+                this.props.messages.forEach(function (msg,index) {
+                    msgs.push(<p>speack:{msg}</p>)
+                })
+                return (
+                    <div>
+                        {msgs}
+                    </div>
+                )
+            }
+        })   
+        ReactDOM.render(<List/>,document.getElementById('root'))
+    </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+cnpm i element-react --D
+cnpm install element-theme-default --D
+cnpm i sass-loader css-loader style-loader -D
+cnpm i file-loader -D
+这里配置的env需要babel-preset-env这个模块:cnpm i babel-preset-env --save-dev  
+
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Button } from 'element-react';
+
+import 'element-theme-default';
+
+ReactDOM.render(<Button type="primary">Hello</Button>, document.getElementById('app'));
+
+
+store . reducers . 
+
+
+
+//~React-Redux 提供Provider组件，可以让容器组件拿到store。
+//~reducer是一个函数（）写了相当于默认状态state，，选择性action传送action(函数动作)
+//~App拿到默认状态console.log(store.getState());
+
+ this.props.fetchList()  建立dispatch执行派发任务
+
+connect
+~ export default connect(mapStateToProps,{increase,decrease,fetchList,addToCartAt})(Counter)
+
+~const mapStateToProps=(state)=>{//方法 相当于store。getState。count
+~向默认为数据(mapStateToProps对象) action传送 选择性action Object.assign合并
+
+~仓库变化
+      
+        ~这一步改变  //~React-Redux 提供Provider组件，可以让容器组件拿到store。
+
+
+mapStateToProps
+        map映射state状态to到props属性 (将状态转化为属性)
+mapDispatchProps
+        map映射Dispatch分发的方法to到props属性(将分发的方法转成属性)
+
+
+
+ajax 请求post和get的区别
+        一个是放在url后，另一个是放在虚拟载体中
+        长度限制不同
+        安全程度不同
+        一个主要用于网站评论上等只用来请求  一个是类似于修改密码的
+
+ajax同步和异步的区别，如何解决跨域
+        同步：脚本会停留等待服务器回复，在继续执行
+        异步：脚本允许页面继续其进程，并处理可能的回复
+        跨域是基于js的同源策略的限制
+            前端对于跨域的解决   
+                动态创建script标签
+                document.domain.iframe
+                \
+
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://fb.me/react-error-boundaries to learn more about error boundaries.
+考虑在树中添加一个错误边界，以定制错误处理行为。
+访问https://fb。为了了解更多关于错误边界的信息，我将会对错误边界进行更多的了解。
+Object.assign({},state,{title:action.data});
+
+
+
+qs.stringify() 和JSON.stringify()有什么区别，什么情况下用哪一个
+qs.stringify序列化结果如下
+
+name=hehe&age=10
+而JSON.stringify序列化结果如下：
+
+"{"a":"hehe","age":10}"
+
+
+文件编码{如果utf-8保存后还乱码 ，就保存成with bom}
+页面编码{meta charset}
+请求编码{ConTent-Type：x-www-form-urlencoded；charset=utf-8}
+地址编码{escape/unescape——>encodeURLComponent}
+数据内容编码
+        对于数据的操作我们一般只有：
+        查 get  http://locslhost:3000/posts
+        增 post  http://locslhost:3000/posts
+        删 delete  http://locslhost:3000/posts/:id
+        改 put  http://locslhost:3000/posts/:id
+
+
+
+"start": "webpack-dev-server --inline --content-base .", //npm start
+ "dev":"webpack-dev-server --content-base=./ --hot --inline --watch" //npm run dev
+
+
+
+ <Button onClick={this.handlerClick}>加入购物车</Button>
+ handlerClick=(e)=>{
+         做两件事 
+         axio/feach————>action里的一个方法 ——>fetch(fetchList)
+ }\
+
+ fetch("/search/project/", {
+  method: "POST",
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded'
+  },
+  body: "q=参数q"
+}).then(function(response) {
+  // do sth
+});
+关键点在于headers，因为默认Content-Type不是application/x-www-form-urlencoded，所以导致后台无法正确获取到q的值。
+
+
+
+handlerClick=(id=>e=>{
+        
+})

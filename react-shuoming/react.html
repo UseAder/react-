@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../lib/react.min.js"></script><!--react方法引入-->
+    <script src="../lib/react-dom.min.js"></script><!--DOM标签解析-->
+    <script src="../lib/browser.min.js"></script><!--Jsx语法解析-->
+</head>
+<style>
+.dai{
+    color: aqua;
+}
+</style>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">//解析 text/bable
+        var style={color:'red',fontSize:'20px'}
+        function handleClick1(event){
+                // alert(1)
+                console.log(event.target+'2')
+            }
+        var MassBox=React.createClass({
+            //1       
+            handleClick(event){
+                // alert(1)
+                console.log(event.target)
+            },
+            handleClick(event){
+                // alert(1)
+                console.log(event.target)
+            },
+            render:function() {
+               
+                var _css=this.CSS;
+                return(
+                //2  只能有一个跟标签          
+                    <div className="dai"> {/*注释方法只能放在跟标签内class是一个关键词 改为className*/}
+                         这是真的吗:style第一种className
+                        <h1 style={style}>style引用的第二种方式，用JS的方法定义了函数内定义了一个对象，对象的内容为样式操作。键名采用驼峰式写法</h1>                   
+                        <p>style第三种外部文件引用定义成对象：看注释</p>{/*var style={div：{color：'red'},h1:{color:'red'}} style={style.div}*/}
+                        <span style={_css.span}>style第四种prototype写法</span>
+                        
+                        <button onClick={this.handleClick}>按钮</button>
+                        <button onClick={handleClick1}>按钮1</button>
+                        <button onTouchEnd={this.handleClick}>移动端触发事件</button>
+                    
+                    </div>
+                )
+            }
+        })
+        MassBox.prototype.CSS={
+            span:{
+                color:'pink'
+            }
+        }     
+        //3
+        ReactDOM.render(<MassBox/>,document.getElementById('root'))
+    </script>
+</body>
+</html>

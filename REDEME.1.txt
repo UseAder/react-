@@ -1,6 +1,14 @@
 
 混合属性  mixins:[外部属性],
-子父组件都可以进行混合对象的引入 详见react3
+子父组件都可以进行混合对象的引入 详见react3 react4
+ mixins:[React.addons.LinkedStateMixin],//连接状态的混合操作:
+        getInitialState:function () {
+                        return {
+                            message:"hello REACT",
+                            isReactCool:true
+                        }
+                    },
+        this.linkState('message')
 
 
 父孙之间的传递：详见react4
@@ -106,7 +114,7 @@ gulp/webpack
     </Route>   
         的形式进行嵌套的操作,其子页面在此字节用{this.props.children}进行渲染操作(与Vue中的router-view相似)
 5.参数的操作主要有设参(静态路由表进行设置，通过：argu设置)，传参(一般在URL-->Link进行传递)
-    接参(通过this.props.props.params.xx进行参数的接收)   
+    接参(通过this.props.params.xx进行参数的接收)   
 6.Link可以封装成一个自定义的组件NavLink，里面可以设置一个activeClassName进行高亮的样式设置
 7.多层嵌套和一般嵌套性质相同。
 8.构建了一个Home页面，就是在静态路由表设置IndexRoute处理我们的首页显示操作
@@ -121,6 +129,7 @@ gulp/webpack
 
 
 webpack - router 4.0 (react-router/react-router-dom的代码模型)
+
         cnpm i react react-dom react-router react-router-dom -S
         ERROR in Entry module not found: Error: Can't resolve 'babel-loader'
         输入模块中的错误没有发现:错误:无法解析“bab加载器”(重新cnpm i)
@@ -142,9 +151,36 @@ NavLink (activeClassName="active" 设置重新加载bundle.js)
 import {Home,BasicRouting} from './modules';//./modules.index(模块配置)
  <li><NavLink to="/BasicRouting" activeClassName="active">BasicRouting</NavLink></li>
                  <Route exact path="/BasicRouting" component={BasicRouting}/>
-
-
-
 App.js
     BrowserRouter 改成HashRouter(包括导入的)
 
+路由4的总结：
+        安装：cnpm babel-preset-stage-0  (解决...展开式传递问题)
+            实现一个最基本的路由，只需要包含HashRouter、BrowserRouter、Route
+                <HashRouter><div></div><Route></Route></HashRouter>相当于
+        ——>路由2：<div><div></div>{this.props.children}</div>
+
+    1.路由4中既有Link导航又有NavLink导航(内置)，NavLink比路由2的Link多一些属性例：activeClassName
+    2.构建一个路由，通常是一个模块，但是我们会将在一个文件夹下建立一个index.js汇总文件，
+        这个文件导入所有的组件，使用时以(import {xxx，xxx} from "./文件夹")，需要什么，导入什么xxx
+    3.配置一个路由的操作流程
+        1.看上面的第2项
+        2.利用Link/NavLink进行模块的连接操作
+        3.通过Route进行路由的静态路由表配置操作，设置path以及对应的component属性
+        4.Swith的作用相当于一个选择，组件存在匹配的，不回去加载其他项
+    4.嵌套模式
+        路由2：(统一写在路口文件，和Vue-router很像)
+            <Router><Route></Route></Router>
+        路由4：
+            App.js路由导入其他路由
+                标签<Route component={xxx}>
+    5.路由4参数传递与路由2区别:
+        设参、传参基本一致  
+        路由2接参(this.props.params.xxx); 
+        路由4接参(this.props.match.params.xxx),采用Es6可以直接const {xxx，xxx}=this.props，
+            一次可以导入多个属性对象
+    6.提醒确认
+        采用的是Prompt,而 Vue中是钩子函数 BeforeRouterEnter/Lerve
+    7.默认页的显示需要配合Switch操作，默认路由的设置不需要编写path，只需要设置component
+    8.在Link或者NavLink中的to选项内容既可以用string字符串拼接，也可以采用Object的传递模式
+    9.当一个组件的Route的component设置为自身的组件名时，组件可以形成递归显示   

@@ -1,0 +1,133 @@
+Readux对于javascript是一个可预测状态的容器
+        (状态管理器,数据流框架，用一个单独的常量(状态树)保存这一整个应用的状态)
+    
+    Readux与Flux差异没有分发器dispatcher
+
+    1.state 以单一对象存储在store对象中，只读，使用纯函数(pure function)
+            只要是同样的输入，必定得到同样的输出。 reducer 执行state更新
+
+
+
+Redux核心API:
+    引入必要组件：
+        import { createStore, combineReducers  } from 'redux';
+
+        生成store：
+        const store = createStore(reducer,  state初始状态[可选]);
+
+        取得当前时刻的state：
+        const state = store.getState();
+
+        发出action
+        store.dispatch({
+        type: 'ADD_TODO',
+        payload: 'Learn Redux'
+        });
+
+        设置监听函数：
+        store.subscribe(callback);
+       
+        Reducer写法一：
+            const chatReducer = (state = defaultState, action = {}) => {
+            const { type, payload } = action;
+            switch (type) {
+                case ADD_CHAT:
+                return Object.assign({}, state, {
+                    chatLog: state.chatLog.concat(payload)
+                });
+                case CHANGE_USERNAME:
+                return Object.assign({}, state, {
+                    userName: payload
+                });
+                default: return state;
+            }
+            };
+        Reducer写法二：
+            前提条件：如果不同的action所处理的属性之间没有联系，我们可以把 Reducer 函数拆分。不同的函数负责处理不同属性，最终把它们合并成一个大的 Reducer 即可。
+            const reducer = combineReducers({
+            a: functionA,
+            b: functionB,
+            c: functionC
+            })
+
+
+
+webpack.config.js文件中添加：          
+    var webpack =require('webpack');
+    var path =require('path');
+    var proxy=require('http-proxy-middleware');
+    安装：cnpm i http-proxy-middleware -D
+
+    安装：cnpm i axios - S
+
+Readux安装 cnpm i redux -S (详见文件夹 webpack-redux)
+
+
+Middleware机制 (处理异步)
+    安装：cnpm i redux-thunk -D
+
+        export default function thunkMiddleware({ dispatch, getState }) {
+            return next => action =>
+                typeof action === 'function' ?
+                action(dispatch, getState) :
+                next(action);
+            }如果action是function，则先执行action，action的处理结束之后，再在action的内部调用dispatch。
+
+    redux-thunk：
+        store.dispatch参数可以是一个function
+
+        使用方法：
+                1.引入：
+                    import thunk from 'redux-thunk';
+
+                2.加入中间件
+                    const store = createStore(fetchReducer, applyMiddleware(thunk));
+
+                3.传入function的结构
+                    const fetchData = postTitle => (dispatch, getState) => {
+                        dispatch({
+                            type: postTitle + "_START"
+                        });// 做异步处理，比如ajax，在回调中再次dispatch
+                    };
+
+    redux-promise：
+        store.dispatch的action的payload属性可以放promise对象
+
+        使用方法：
+            1.引入：
+                import promiseMiddleware from 'redux-promise';
+            2.加入中间件
+                const store = createStore(fetchReducer, applyMiddleware(promiseMiddleware));
+            3.把promise传入payload
+                store.dispatch({
+                     type: 'FETCH_DATA_FINISH', 
+                     payload: fetch('/data_api/users/')
+                    .then(response => response.json())
+                });
+
+
+react-redux说明 (详见文件夹react-redux)
+    一个网页的语法观查：
+            cnpm i redux-logger -S
+                prev state 前面一个状态
+                action 
+                next state 当前状态
+
+
+
+
+项目说明：
+        1.运用git
+        2.nodejs+mongoose+mongoodb
+        3.uesr、cart、news、product、comment、upload
+        4.react__react-router 4.0__react-redux__bootstrop
+        5.首页(最新的新闻以及产品 列出几个用户及其评论、相册)
+          新闻(默认显示所有分类内容，可以进行分页，搜索
+                左边要显示分类，点击分类切换新闻；；点击新闻进入新闻详情页，有评论，评论要有列表功能
+                    以及评论发送功能   特殊模块：右侧存在最新商品列表)
+        6.产品模块(分类、产品列表、分页、搜索、产品有添加购物车按钮
+                    特殊模块：右侧存在最新新闻，点击新闻进入新闻详情页，有评论，评论要有列表功能
+                    以及评论发送功能)   
+        7.购物车清单模块(列出了购物车的清单、数量、金额、总金额)
+        8.提交20次git         
+

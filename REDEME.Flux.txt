@@ -1,0 +1,31 @@
+Flux是Facebook用来构建客户端Web应用的应用架构，单向数据流，视图组件，
+    Flux不是一个框架，而是一种思想。
+   流程：
+    用户访问 View
+
+    View        发出用户的 Action ————>(Action（动作）：视图层发出的消息（比如click）
+    Dispatcher  收到 Action,管理着Flux应用中的所有数据流,要求 Store 进行相应的更新————>(Action（动作）：视图层发出的消息（比如click用来接收Actions、执行回调函数
+    Store       Store是应用中唯一的数据发生变更的地方 更新后，发出一个"change"事件————>(用来存放应用的状态，一旦发生变动，就提醒)
+    View        收到"change"事件后，更新页面
+   
+    controller-view     可以理解成MVC模型中的controller是应用中唯一可以操作state的地方(setState())
+    view(UI组件) ui-component 职责单一只允许调用action触发事件，数据从由上层容器通过属性传递过来。
+    actionCreators是相对独立的，它作为语法上的辅助函数以action的形式使得dispatcher传递数据更为便利。
+
+安装：cnpm i flux -S
+
+    flux流程说明
+        例子：
+
+        Todo(展示。botton。onClick 用户的点击)
+
+        TOdoController(对点击操作的处理，决定onClick操作与谁进行连接，监听仓库的变化)
+
+        Action(对操作的内容进行动作处理 例如：添加||修改||删除||加入购物车)
+
+        Dispatcher(分发层 只做分发操作 ，不作具体的数据处理)
+
+        Store(仓库 数据的修改操作，实时监听数据的变化)
+                ————》到这里后回到TOdoController(监听的操作处理)————>todo(展示)
+
+

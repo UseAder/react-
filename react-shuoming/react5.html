@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../lib/react.min.js"></script><!--react方法引入-->
+    <script src="../lib/react-dom.min.js"></script><!--DOM标签解析-->
+    <!-- <script src="../lib/react-with-addons.min.js"></script> -->
+    <script src="../lib/browser.min.js"></script><!--Jsx语法解析-->
+</head>
+<style>
+
+</style>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        var List=React.createClass({
+            // mixins:[React.addons.LinkedStateMixin],//连接状态的混合操作
+            getInitialState:function () {
+                return {
+                    inputValue:'input 值',
+                    checkValues:[],
+                    selectValue:'C',
+                    radioValue:'B', 
+                    textareaValue:'textarea的内容'
+                }
+            },
+            handlerSubmit(event){
+                    // console.log(event);
+                    event.preventDefault();//阻止默认事件 
+                },
+            handlerInput:function (e) {
+                this.setState({
+                    inputValue:e.target.value
+                })
+            },
+            handlerCheck:function (e) {
+                // alert(1)
+                var checkValues=this.state.checkValues;
+                var newVal=e.target.value;
+                var index=checkValues.indexOf(newVal);
+                if (index==-1) {
+                    checkValues.push(newVal)
+                } else {
+                    checkValues.splice(index,1)
+                }
+                this.setState({
+                    checkValues:checkValues
+                })
+                console.log(checkValues);
+                    
+            },
+            handlerSubmit(event){
+                event.preventDefault();//阻止默认事件 
+                // console.log(this.refs.inputRef);
+                
+                var formData={
+                    inputValue:this.state.inputValue,
+                    selectValue:this.state.selectValue,
+                    radioValue:this.state.radioValue,
+                    checkValues:this.state.checkValues,
+                    textareaValue:this.state.textareaValue
+                }
+                // console.log(formData);
+                
+            },
+            render:function () {
+                
+                return (
+                    <div>
+                        
+                       <form onSubmit={this.handlerSubmit}>{/*value是readonly(只读)*/}
+                            <input type="text" ref="inputRef" value={this.state.inputValue} onChange={this.handlerInput}/>
+                            <br/>
+                            <p>选择：</p>
+                            <select defaultValue={this.state.selectValue}>
+                                <option value='A'>A</option>
+                                <option value='B'>B</option>
+                                <option value='C'>C</option>                              
+                            </select>
+                            <p>单选：</p>
+                              A  <input name="goodRadio" type="radio" value="A"/>
+                              B  <input name="goodRadio" type="radio" value="B" defaultChecked/>
+                              C  <input name="goodRadio" type="radio" value="C"/>
+                              D  <input name="goodRadio" type="radio" value="D"/>
+                            <p>多选：</p>
+                              A  <input name="goodRadio" type="checkbox" value="A"/>
+                              B  <input name="goodRadio" type="checkbox" value="B" defaultChecked/>
+                              C  <input name="goodRadio" type="checkbox" value="C"/>
+                              D  <input name="goodRadio" type="checkbox" value="D"/>
+                              <p>多选2：</p>
+                                A  <input name="goodRadio" type="checkbox" onChange={this.handlerCheck} value="A"/>
+                                B  <input name="goodRadio" type="checkbox" onChange={this.handlerCheck} value="B"/>
+                                C  <input name="goodRadio" type="checkbox" onChange={this.handlerCheck} value="C"/>
+                                D  <input name="goodRadio" type="checkbox" onChange={this.handlerCheck} value="D"/>
+                            <p>内容：</p>
+                            <textarea defaultValue={this.state.selectValue}></textarea>  
+                            <button type="submit">提交</button>
+                       </form>
+                    </div>
+                )
+            }
+        })    
+        ReactDOM.render(<List/>,document.getElementById('root'))
+    </script>
+</body>
+</html>

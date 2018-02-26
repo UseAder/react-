@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../lib/react.min.js"></script><!--react方法引入-->
+    <script src="../lib/react-dom.min.js"></script><!--DOM标签解析-->
+    <script src="../lib/react-with-addons.min.js"></script>
+    <script src="../lib/browser.min.js"></script><!--Jsx语法解析-->
+</head>
+<style>
+
+</style>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+    var $=(function () {
+        var ajax=function (url,callback) {
+            var xhr=new XMLHttpRequest();
+            xhr.open('GET',url,true);
+            xhr.send('');
+            xhr.onreadystatechange=function () {
+                if (xhr.readyState==4&&xhr.status==200) {
+                    callback(JSON.parse(xhr.responseText));
+                }
+            }   
+        } 
+        return {
+            http:ajax
+        }
+    })()
+    
+    var s ={
+        getA:function () {
+            alert('A')
+        },
+        getB:function () {
+            alert('B')
+        }
+    }
+
+
+        var MassBox=React.createClass({
+            mixins:[s],
+            getDefaultProps:function () {
+                return {
+                    url:'http://localhost:3000/posts'
+                }
+            },
+            getInitialState:function () {
+             return {
+                 result:''
+             }   
+            },
+            componentWillMount:function () {
+                var _this=this;
+                $.http(this.props.url,function (data) {
+                    // console.log(data);
+                    _this.setState({
+                        result:data
+                    })
+                })
+            },
+            render:function() {
+                // console.log(this.state.result);
+                var jsx=[];
+                var _resule=this.state.result;
+                var _resuleLength=this.state.result.length;
+                for (let i = 0; i < _resuleLength; i++) {
+                    jsx.push(
+                        // <li key={i}>
+                        //     <p>{_resule[i].title}</p>
+                        //     <span>{_resule[i].author}</span>
+                        // </li>
+                        <ListChild {..._resule[i]}/>
+                    )
+                    
+                }
+                // console.log(jsx);
+               
+                return(
+                    <div className="dai">这是的
+                            <ul onClick={this.getA}>
+                             {jsx}  
+                             </ul>  
+                    </div>                  
+                )
+            }
+        })
+        var ListChild=React.createClass({
+            mixins:[s],
+            render:function() {
+                console.log(this.props);
+                return(
+                    <div>
+                            <li onClick={this.getB}>
+                            <p>{this.props.title}</p>
+                            <span>{this.props.author}</span>
+                        </li> 
+                    </div>                  
+                )
+            }
+        })
+        ReactDOM.render(<MassBox/>,document.getElementById('root'))
+    </script>
+</body>
+</html>
